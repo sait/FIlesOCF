@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+
+        @page {
+            *width: 8.5in;
+            margin: 0;
+        }
+
+        body {
+            /*display: table;*/
+            font-family: sans-serif;
+            font-size: 10pt;
+        }
+
+        table {
+            width: 100%;
+            border: 1px #000000 solid;
+        }
+
+        th {
+            background-color: rgb(50, 99, 195);
+            color: white;
+        }
+
+        table, th, td {
+            border-collapse: collapse;
+            padding: 3px 5px 8px 5px;
+        }
+
+        .cantidad {
+            width: 5%;
+        }
+
+        .descripcion {
+            width: 50%;
+        }
+
+        .unidad, .codigo {
+            width: 10%;
+        }
+
+        .precio {
+            width: 10%;
+        }
+
+        .importe {
+            width: 15%;
+        }
+
+        .observaciones {
+            width: 65%;
+        }
+
+        .row {
+            display: table-row;
+            width: 100%;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .withBorderSides th {
+            border: 1px #000000 solid;
+        }
+
+        .withBorderSides td {
+            border-left: 1px #000000 solid;
+        }
+
+        .withBorder th, .withBorder td, .withBorder {
+            border: 1px #000000 solid;
+        }
+
+        .header {
+            display: table;
+            width: 100%;
+        }
+
+        .cell-center,
+        .cell-right,
+        .cell-left {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .header .cell-left .logo {
+            max-width: 100%;
+            max-height: 200px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .header .cell-center {
+            /*font-weight: bold;*/
+            padding: 0 20px;
+            width: 40%;
+        }
+
+        .header .cell-center p {
+            font-size: 12pt;
+        }
+
+        .header .cell-right {
+            width: 35%;
+        }
+
+        .header .cell-right .leyenda {
+            background-color: #b0c4de;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20pt;
+            padding: 15px 0;
+        }
+
+        .body .data-products table tbody tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        .body .data-products table {
+            page-break-inside: auto;
+        }
+
+        .body .data-products table thead {
+            display: table-header-group;
+        }
+
+        .footer .cell-left table {
+            page-break-inside: avoid;
+        }
+
+        .footer .cell-left table tbody td {
+            word-break: break-all;
+            font-size: 8.5pt;
+        }
+
+        .footer .cell-right img {
+            margin-left: 10px;
+        }
+
+        .footer .text-cfdi {
+            font-size: 14pt;
+            font-weight: bold;
+            margin: 10px 0 10px 0;
+        }
+
+        .body .data-pagos .uuid {
+
+            width: 30%;
+        }
+
+        .body .data-pagos .folio {
+            width: 10%;
+        }
+
+        .body .data-pagos .moneda {
+            width: 5%;
+        }
+
+        .body .data-pagos .metodo {
+            width: 5%;
+        }
+
+        .body .data-pagos .saldoant {
+            width: 15%;
+        }
+
+        .body .data-pagos .monto {
+            width: 20%;
+        }
+
+        .body .data-pagos .saldopen {
+            width: 15%;
+        }
+
+        .body .data-pagos .fechaPago {
+            /*text-align: left;*/
+            width: 20%;
+        }
+
+        .body .data-pagos .montoPago {
+
+            width: 25%;
+        }
+
+        .body .data-pagos .cantidadLetraPago {
+            width: 60%;
+        }
+
+        .background {
+            top: 35%;
+            position: absolute;
+            background: none;
+            display: block;
+            min-height: 50%;
+            min-width: 60%;
+            color: yellow;
+        }
+
+        .bg-text {
+            color: rgba(255, 0, 0, 0.25);
+            font-size: 120px;
+            transform: rotate(300deg);
+            -webkit-transform: rotate(300deg);
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="row">
+            <div class="cell-left ">
+            </div>
+            <div class="cell-center text-center">
+                <h3>{{Cfdi.Emisor.Nombre}}
+                    <br>{{Cfdi.Emisor.RFC}}
+                </h3>
+
+                <p>
+                    Lugar de Expedición:
+                    C.P: {{Cfdi.LugarExpedicion}}
+                </p>
+                <br>
+            </div>
+            <div class="cell-right text-center">
+                <!--<div class="leyenda">RECIBO DE PAGO - {{Cfdi.Serie}}{{Cfdi.Folio}}</div>-->
+                <!--<br>-->
+                <table class="withBorder">
+                    <thead>
+                    <tr>
+                        <th colspan="2">
+                            {{#equal Cfdi.Tipo "I"}}Factura{{/equal}}
+                            {{#equal Cfdi.Tipo "E"}}Nota de Crédito{{/equal}}
+                            {{#equal Cfdi.Tipo "T"}}Traslado{{/equal}}
+                            {{#equal Cfdi.Tipo "P"}}Pago{{/equal}}
+                            {{Cfdi.Serie}}{{Cfdi.Folio}}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Serie y Folio:</th>
+                        <th>Fecha y Hora de Expedici&oacute;n</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{Cfdi.Serie}}{{Cfdi.Folio}}</td>
+                        <td>
+                            {{Misc.FormatDate(Cfdi.Fecha)}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="data-client">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="text-center"><b>RFC</b></td>
+                    <td colspan="2">{{Cfdi.Receptor.RFC}}</td>
+                    <th colspan="2" class="withBorder">No. Certificado:</th>
+                </tr>
+                <tr>
+                    <td class="text-center"><b>Cliente</b></td>
+                    <td colspan="2">{{Cfdi.Receptor.Nombre}}</td>
+                    <td class="text-center withBorder" rowspan="4">
+                        {{#if(Cfdi.Complemento.TimbreFiscalDigital.NoCertificadoSAT)}}
+                        {{Cfdi.Complemento.TimbreFiscalDigital.NoCertificadoSAT}}
+                        {{/if}}
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot class="withBorder">
+                <tr>
+                    <th>Uso del CFDI</th>
+                    <td>{{Cfdi.Receptor.UsoCFDI}}</td>
+                    <th class="withBorder cell-sm">Condiciones de Pago:</th>
+                    <td class="text-center withBorder cell-sm">{{Cfdi.CondicionesDePago}}</td>
+                </tr>
+                <tr>
+                    <th>Forma de Pago:</th>
+                    <td>{{Cfdi.FormaPago}}</td>
+                    <th>Método de Pago:</th>
+                    <td colspan="2">
+                        {{#equal Cfdi.MetodoPago "PUE"}}
+                        PAGO EN UNA SOLA EXHIBICI&Oacute;N
+                        {{/equal}}
+                        {{#equal Cfdi.MetodoPago "PPD"}}
+                        PAGO EN PARCIALIDADES O DIFERIDO
+                        {{/equal}}
+                    </td>
+
+                </tr>
+                <tr>
+                    <th>Régimen Fiscal</th>
+                    <td colspan="4">{{Cfdi.Emisor.RegimenFiscal}}</td>
+                </tr>
+                </tfoot>
+
+            </table>
+
+        </div>
+        <br>
+
+        <div class="data-products">
+            <table>
+                <thead>
+                <tr>
+                    <th class="codigo">Código</th>
+                    <th class="cantidad">Cantidad</th>
+                    <th class="descripcion">Descripción</th>
+                    <th class="unidad">Unidad de Medida</th>
+                    <th class="precio">Precio Unitario</th>
+                    <th class="importe">Importe</th>
+                </tr>
+                </thead>
+                <tbody class="withBorderSides">
+                {{#each Cfdi.Conceptos as |Concepto| }}
+                <tr>
+                    <td class="text-center">{{Concepto.ClaveProdServ}}</td>
+                    <td class="text-center">{{Concepto.Cantidad}}</td>
+                    <td>{{Concepto.Descripcion}}</td>
+                    <td class="text-center">{{Concepto.ClaveUnidad}}</td>
+                    <td class="text-right"> {{Misc.FormatMoney(Concepto.ValorUnitario)}}</td>
+                    <td class="text-right"> {{Misc.FormatMoney(Concepto.Importe)}}</td>
+                </tr>
+                {{/each}}
+
+                </tbody>
+                <tfoot class="withBorder">
+            <tr>
+                <th colspan="2">Cantidad con letra</th>
+                <td class="text-center" colspan="3">*** {{ Misc.NumeroLetrav40(Cfdi) }}
+                    {{ Cfdi.Moneda}} ***</td>
+                <td class="text-center">
+                    {{#equal Cfdi.Moneda "USD"}}
+                    <b>Tipo de cambio:</b> $ {{Cfdi.TipoCambio}} x 1 {{Cfdi.Moneda}}
+                    {{/equal}}
+                </td>
+            </tr>
+
+            </tfoot>
+            </table>
+            <br>
+
+            <div class="data-total">
+                <table>
+                    <tbody class="withBorderSides">
+                    <tr>
+                        <th colspan="4" class="observaciones">OBSERVACIONES:</th>
+                        <th class="">Sub Total:</th>
+                        <td class="text-right"> {{Misc.FormatMoney(Cfdi.SubTotal)}}</td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-left" colspan="4" rowspan="9">
+
+                            {{#if Cfdi.MotivoDescuento }}
+                            <p><b>Motivo de Descuento: </b>{{Cfdi.MotivoDescuento}}</p>
+                            {{/if}}
+
+
+                            {{#if Cfdi.FolioFiscalOrig }}
+                            Datos Fiscales Originales
+                            <p><b>Folio : </b>{{Cfdi.FolioFiscalOrig}}</p>
+
+                            <p><b>Fecha : </b>{{Cfdi.FechaFolioFiscalOrig}}</p>
+
+                            <p><b>Total : </b>  {{Misc.FormatMoney(Cfdi.MontoFolioFiscalOrig)}}</p>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr>
+                        {{#if Cfdi.Descuento}}
+                        <th>(-)Descuento</th>
+                        <td class="text-right pre"> {{Misc.FormatMoney(Cfdi.Descuento)}}</td>
+                        {{/if}}
+                    </tr>
+                    {{#each Impuestos.Traslados.Iva}}
+                        <tr>
+                            <th>(+) IVA % {{ this.Portentaje }}</th>
+                            <td class="text-right"> {{Misc.FormatMoney(this.Importe)}}</td>
+                        </tr>
+                    {{/each}}
+                    <tr>
+                        {{#if Impuestos.Traslados.Ieps}}
+                        <th>(+) IEPS</th>
+                        <td class="text-right"> {{Misc.FormatMoney(Impuestos.Traslados.Ieps)}}</td>
+                        {{/if}}
+                    </tr>
+                    <tr>
+                        {{#if Impuestos.Retenciones.Iva}}
+                        <th>(-) Ret.IVA</th>
+                        <td class="text-right"> {{Misc.FormatMoney(Impuestos.Retenciones.Iva)}}</td>
+                        {{/if}}
+                    </tr>
+                    <tr>
+
+                        {{#if Impuestos.Retenciones.Isr}}
+                        <th>(-) Ret.ISR</th>
+                        <td class="text-right"> {{Misc.FormatMoney(Impuestos.Retenciones.Isr)}}</td>
+                        {{/if}}
+                    </tr>
+                    <tr>
+                        <th>Total:</th>
+                        <td class="text-right"> {{Misc.FormatMoney(Cfdi.Total)}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+
+        {{#if(CfdiRelacionado.TipoRelacion)}}
+        <br>
+        <table style="width: 450px">
+            <thead class="">
+            <tr>
+                <th class="" colspan="2"> Otros CFDIs Relacionados</th>
+            </tr>
+            <tr>
+                <td class="text-center" colspan="2"> Tipo de Relaci&oacute;n: {{CfdiRelacionado.TipoRelacion}} -
+                    Sustitución de los CFDI previo
+                </td>
+            </tr>
+            </thead>
+            <tbody class="withBorder">
+            {{#each CfdiRelacionados as |Cfdi|}}
+            <tr>
+                <td><b>UUID</b></td>
+                <td class="text-center">{{Cfdi.UUID}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+
+        {{/if}}
+
+    </div>
+    <br>
+
+    <div class="footer">
+        <div class="row">
+            <div class="cell-left">
+                <table class="withBorder">
+                    <tbody>
+                    <tr>
+                        {{#if CadenaSAT}}
+                        <th>Cadena Original:</th>
+                        <td colspan="3">{{CadenaSAT}}</td>
+                        {{/if}}
+                    </tr>
+                    <tr>
+                        {{#if Cfdi.Sello}}
+                        <th>Sello:</th>
+                        <td colspan="3">{{Cfdi.Sello}}</td>
+                        {{/if}}
+                    </tr>
+                    <tr>
+                        {{#if Cfdi.Complemento.TimbreFiscalDigital.SelloSAT}}
+                        <th>Sello SAT:</th>
+                        <td colspan="3">{{Cfdi.Complemento.TimbreFiscalDigital.SelloSAT}}</td>
+                        {{/if}}
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>Fecha Timbre:</th>
+                        <td>
+                            {{#if Cfdi.Complemento.TimbreFiscalDigital.FechaTimbrado}}
+                            {{Cfdi.Complemento.TimbreFiscalDigital.FechaTimbrado}}
+                            {{/if}}
+                        </td>
+                        <th>Certificado SAT:</th>
+                        <td>
+                            {{#if Cfdi.Complemento.TimbreFiscalDigital.NoCertificadoSAT}}
+                            {{Cfdi.Complemento.TimbreFiscalDigital.NoCertificadoSAT}}
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Version Timbre:</th>
+                        <td>{{Cfdi.Complemento.TimbreFiscalDigital.Version}}</td>
+                        <th>UUID :</th>
+                        <td>
+                            {{#if Cfdi.Complemento.TimbreFiscalDigital.UUID}}
+                            {{Cfdi.Complemento.TimbreFiscalDigital.UUID}}
+                            {{/if}}
+                        </td>
+
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="cell-right">
+                <p><img src="data:image/jpeg;base64,{{QR}}"></p>
+
+            </div>
+        </div>
+
+        <div class="text-cfdi text-center">
+             ** Comprobante Fiscal Digital Generico Generado a través de SAIT OCF **
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>
